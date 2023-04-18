@@ -1,37 +1,30 @@
 package cn.jpush.reactnativejvrification;
 
-import android.Manifest;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.cmic.sso.sdk.AuthThemeConfig;
-import com.cmic.sso.sdk.activity.LoginAuthActivity;
-import com.cmic.sso.sdk.auth.AuthnHelper;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.PreLoginListener;
+import cn.jiguang.verifysdk.api.PrivacyBean;
 import cn.jiguang.verifysdk.api.RequestCallback;
 import cn.jiguang.verifysdk.api.VerifyListener;
 import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
-import cn.jpush.reactnativejvrification.utils.AndroidUtils;
 
 public class JVerificationModule extends ReactContextBaseJavaModule  {
 
@@ -69,6 +62,8 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
                 doCallback(callback, code, content);
             }
         });
+
+        JVerificationInterface.setDebugMode(true);
     }
 
 
@@ -110,7 +105,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
     @ReactMethod
     public void loginAuth(ReadableMap map, final Callback callback) {
         boolean isInstallWechat = map.getBoolean("isInstallWechat");
-        boolean checked = map.getBoolean("checked");
         ImageButton mBtn = new ImageButton(this.getCurrentActivity());
         RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -144,6 +138,11 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
 
         viewGroup.setLayoutParams(mLayoutParams3);
 
+        List<PrivacyBean> privacyBeans = new ArrayList<PrivacyBean>() {{
+            add(new PrivacyBean("《用户服务协议》", "https://wechat.letote.cn/agreement", "，"));
+            add(new PrivacyBean("《隐私政策》", "https://wechat.letote.cn/privacy", "，"));
+        }};
+
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setNavColor(0xffffffff)
                 .setNumberTextBold(true)
@@ -160,15 +159,19 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
                 .setLogBtnTextColor(0xffffffff)
                 .setLogBtnImgPath("native_login_bg")
                 .setAppPrivacyColor(0xff666666, 0xff0085d0)
+                .setCheckedImgPath("native_checked")
+                .setUncheckedImgPath("native_unchecked")
                 .setSloganTextColor(0xff999999)
                 .setLogoOffsetY(50)
                 .setNumFieldOffsetY(170)
                 .setSloganOffsetY(215)
                 .setLogBtnOffsetY(254)
-                .setPrivacyState(checked)
-                .setPrivacyTextCenterGravity(true)
+                .setPrivacyMarginL(40)
+                .setPrivacyMarginR(40)
                 .setSloganTextSize(12)
-                .setPrivacyCheckboxSize(14)
+                .setPrivacyCheckboxSize(30)
+                .setPrivacyText("我已阅读并同意", "并使用本机号码登录")
+                .setPrivacyNameAndUrlBeanList(privacyBeans)
                 .enableHintToast(true,null)
                 .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
                     @Override
