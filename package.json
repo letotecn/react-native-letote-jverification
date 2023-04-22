@@ -1,52 +1,25 @@
 {
-  "_args": [
-    [
-      "git+ssh://git@github.com/letotecn/react-native-letote-jverification.git",
-      "/Users/lavin/Documents/lt/app"
-    ]
-  ],
-  "_from": "git+ssh://git@github.com/letotecn/react-native-letote-jverification.git",
-  "_id": "react-native-letote-jverification@git+ssh://git@github.com/letotecn/react-native-letote-jverification.git#41345eec818827fd459cbbaa261317718ab9958c",
-  "_inBundle": false,
-  "_integrity": "",
-  "_location": "/react-native-letote-jverification",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "git",
-    "raw": "git+ssh://git@github.com/letotecn/react-native-letote-jverification.git",
-    "rawSpec": "git+ssh://git@github.com/letotecn/react-native-letote-jverification.git",
-    "saveSpec": "git+ssh://git@github.com/letotecn/react-native-letote-jverification.git",
-    "fetchSpec": "ssh://git@github.com/letotecn/react-native-letote-jverification.git",
-    "gitCommittish": null
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "git+ssh://git@github.com/letotecn/react-native-letote-jverification.git#41345eec818827fd459cbbaa261317718ab9958c",
-  "_spec": "git+ssh://git@github.com/letotecn/react-native-letote-jverification.git",
-  "_where": "/Users/lavin/Documents/lt/app",
-  "author": {
-    "name": "huminios,JoshLipan"
-  },
-  "bugs": {
-    "url": "https://github.com/jpush/jverification-react-native/issues"
-  },
-  "description": "极光认证 react-native 插件，极光认证整合了三大运营商的号码认证能力，为开发者提供了快速验证用户输入的手机号码和本机SIM卡号码一致性的功能，提高用户体验和安全性。",
-  "homepage": "https://github.com/jpush/jverification-react-native#readme",
-  "keywords": [
-    "jverification",
-    "react-native"
-  ],
-  "license": "MIT",
-  "main": "index.js",
   "name": "react-native-letote-jverification",
-  "peerDependencies": {
-    "jcore-react-native": ">= 1.3.0"
+  "version": "3.4.0",
+  "description": "极光认证 react-native 插件，极光认证整合了三大运营商的号码认证能力，为开发者提供了快速验证用户输入的手机号码和本机SIM卡号码一致性的功能，提高用户体验和安全性。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jpush/jverification-react-native.git"
   },
+  "keywords": [
+    "jverification",
+    "react-native"
+  ],
+  "author": "huminios,JoshLipan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jpush/jverification-react-native/issues"
+  },
+  "homepage": "https://github.com/jpush/jverification-react-native#readme",
   "rnpm": {
     "ios": {
       "sharedLibraries": [
@@ -67,8 +40,7 @@
       ]
     }
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "version": "3.3.0"
+  "peerDependencies": {
+    "jcore-react-native": ">= 1.3.0"
+  }
 }
