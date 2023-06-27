@@ -14,10 +14,10 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jiguang.verifysdk.api.JVerificationConfig;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.PreLoginListener;
 import cn.jiguang.verifysdk.api.PrivacyBean;
@@ -26,16 +26,15 @@ import cn.jiguang.verifysdk.api.VerifyListener;
 import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
 
-public class JVerificationModule extends ReactContextBaseJavaModule  {
+public class JVerificationModule extends ReactContextBaseJavaModule {
 
     private static String TAG = "JVerificationModule";
 
-
-    private  Context context;
+    private Context context;
 
     public JVerificationModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.context=reactContext;
+        this.context = reactContext;
     }
 
     @Override
@@ -54,7 +53,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
     }
 
     @ReactMethod
-    public void initClient(String key,final Callback callback) {
+    public void initClient(String key, final Callback callback) {
 
         JVerificationInterface.init(this.context, new RequestCallback<String>() {
             @Override
@@ -65,7 +64,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
 
         JVerificationInterface.setDebugMode(true);
     }
-
 
     @ReactMethod
     public void setDebug(boolean enable) {
@@ -83,65 +81,44 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
     }
 
     @ReactMethod
-    public void checkVerifyEnable(Callback callback){
-        if(callback==null)return;
+    public void checkVerifyEnable(Callback callback) {
+        if (callback == null)
+            return;
         callback.invoke(JVerificationInterface.checkVerifyEnable(this.context));
     }
 
     @ReactMethod
-    public void preLogin(ReadableMap map,final  Callback callback){
+    public void preLogin(ReadableMap map, final Callback callback) {
 
         int time = map.getInt("timeout");
         JVerificationInterface.preLogin(this.context, time, new PreLoginListener() {
             @Override
             public void onResult(int code, String content) {
-                if(callback==null)return;
+                if (callback == null)
+                    return;
                 doCallback(callback, code, content);
             }
         });
     }
 
-
     @ReactMethod
     public void loginAuth(ReadableMap map, final Callback callback) {
         boolean isInstallWechat = map.getBoolean("isInstallWechat");
         ImageButton mBtn = new ImageButton(this.getCurrentActivity());
-        RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        if (isInstallWechat) {
-            mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            mLayoutParams1.setMargins(200, 0, 0, 250);
-        } else {
-            mLayoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            mLayoutParams1.setMargins(0, 0, 0, 250);
-        }
+        mLayoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        mLayoutParams1.setMargins(0, 0, 0, 250);
         mBtn.setBackgroundResource(R.drawable.native_phone_number_login);
         mBtn.setLayoutParams(mLayoutParams1);
 
-        ImageButton mBtn2 = null;
-        if (isInstallWechat) {
-            mBtn2 = new ImageButton(this.getCurrentActivity());
-            RelativeLayout.LayoutParams mLayoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            mLayoutParams2.setMargins(0, 0, 200, 250);
-            mBtn2.setBackgroundResource(R.drawable.native_wechat_login);
-            mBtn2.setLayoutParams(mLayoutParams2);
-        }
-
-
-        ViewGroup viewGroup = (ViewGroup) getCurrentActivity().getLayoutInflater().inflate(R.layout.line, null);
-        RelativeLayout.LayoutParams mLayoutParams3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        mLayoutParams3.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        mLayoutParams3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        mLayoutParams3.setMargins(0, 0, 0, 500);
-
-        viewGroup.setLayoutParams(mLayoutParams3);
-
-        List<PrivacyBean> privacyBeans = new ArrayList<PrivacyBean>() {{
-            add(new PrivacyBean("《用户服务协议》", "https://wechat.letote.cn/agreement", "，"));
-            add(new PrivacyBean("《隐私政策》", "https://wechat.letote.cn/privacy", "，"));
-        }};
+        List<PrivacyBean> privacyBeans = new ArrayList<PrivacyBean>() {
+            {
+                add(new PrivacyBean("《用户服务协议》", "https://wechat.letote.cn/agreement", "，"));
+                add(new PrivacyBean("《隐私政策》", "https://wechat.letote.cn/privacy", "，"));
+            }
+        };
 
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setNavColor(0xffffffff)
@@ -169,10 +146,10 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
                 .setPrivacyMarginL(40)
                 .setPrivacyMarginR(40)
                 .setSloganTextSize(12)
-                .setPrivacyCheckboxSize(30)
+                .setPrivacyCheckboxSize(28)
                 .setPrivacyText("我已阅读并同意", "并使用本机号码登录")
                 .setPrivacyNameAndUrlBeanList(privacyBeans)
-                .enableHintToast(true,null)
+                .enableHintToast(true, null)
                 .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
                     @Override
                     public void onClicked(Context context, View view) {
@@ -180,20 +157,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
                             doCallback(callback, 8000, "");
                         } catch (Exception e) {
                         }
-
-                    }
-                }).addCustomView(mBtn2, true, new JVerifyUIClickCallback() {
-                    @Override
-                    public void onClicked(Context context, View view) {
-                        try {
-                            doCallback(callback, 9000, "");
-                        } catch (Exception e) {
-                        }
-                    }
-                })
-                .addCustomView(viewGroup, true, new JVerifyUIClickCallback() {
-                    @Override
-                    public void onClicked(Context context, View view) {
 
                     }
                 })
@@ -209,9 +172,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule  {
             }
         });
     }
-
-
-
 
     private void doCallback(Callback callback, int code, String content, String operator) {
         WritableMap map = Arguments.createMap();
