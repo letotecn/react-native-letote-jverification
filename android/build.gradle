@@ -38,5 +38,6 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
-    implementation 'cn.jiguang.sdk:jverification:3.0.0'
-}
+    implementation ('cn.jiguang.sdk:jverification:3.0.0') {
+        exclude group: 'cn.jiguang.sdk', module: 'jcore'
+    }}
